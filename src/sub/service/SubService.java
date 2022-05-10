@@ -46,7 +46,15 @@ public class SubService {
 		}
 	}
 
-	public ArrayList<Sub> listSubService(Map pagingValues) {
+	public ArrayList<Sub> listSubMainService(Map pagingValues) {
+		try (Connection conn = ConnectionProvider.getConnection()) {
+			ArrayList<Sub> ListSub = subDao.subMainSelectAll(conn, pagingValues);
+			return ListSub;
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
+	}
+	public ArrayList<Sub> listSubService(Map<String, Object> pagingValues) {
 		try (Connection conn = ConnectionProvider.getConnection()) {
 			ArrayList<Sub> ListSub = subDao.subSelectAll(conn, pagingValues);
 			return ListSub;
@@ -114,6 +122,23 @@ public class SubService {
 		return result;
 
 	}
+	public int subMainAllCount(String search) {
+		int result = 0;
+		try {
+			conn = ConnectionProvider.getConnection();
+			conn.setAutoCommit(false);
+
+			result = subDao.subMainAllCount(conn, search);
+			conn.commit();
+		} catch (SQLException e) {
+			JdbcUtil.rollback(conn);
+			throw new RuntimeException(e);
+		} finally {
+			JdbcUtil.close(conn);
+		}
+		return result;
+	}
+	
 	public int subAllCount(String search) {
 		int result = 0;
 		try {
@@ -130,5 +155,6 @@ public class SubService {
 		}
 		return result;
 	}
+	
 	
 }

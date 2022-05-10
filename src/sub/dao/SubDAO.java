@@ -1,7 +1,6 @@
 package sub.dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import jdbc.JdbcUtil;
-import main.model.Main;
 import sub.model.Sub;
 import sub.model.SubPaging;
 
@@ -18,7 +16,7 @@ public class SubDAO {
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
 
-	public ArrayList<Sub> subSelectAll(Connection conn, Map pagingValues)
+	public ArrayList<Sub> subMainSelectAll(Connection conn, Map pagingValues)
 			throws SQLException {
 		ArrayList<Sub> SubMixed = new ArrayList<>();
 		SubPaging subPaging = (SubPaging) pagingValues.get("paging");
@@ -27,28 +25,28 @@ public class SubDAO {
 			String search = (String) pagingValues.get("search");
 			pstmt = conn.prepareStatement(
 					" select * from ( select w.no 'w.no' , w.water_ind 'w.water_ind', e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind', u.name 'u.name', u.hire 'u.hire' , u.lease 'u.lease' , u.rent_fee 'u.rent_fee' , u.period 'u.period', u.size 'u.size', u.coming 'u.coming', u.leaving 'u.leaving' , m.memberId 'm.memberId', m.name 'm.name', m.total_size 'm.total_size', m.com_heat 'm.com_heat', m.com_clean 'm.com_clean', m.com_ev 'm.com_ev', m.com_es 'm.com_es', m.com_maintain 'm.com_maintain', m.com_insur 'm.com_insur', m.com_labor 'm.com_labor', m.com_water 'm.com_water', m.com_ele 'm.com_ele' from ele e, water w, unit u , main m where w.no = e.no and e.no =w.no group by e.no "
-					+ "	 having w.no like ? or w.water_ind like ? or  e.ele_basic  like ? or e.ele_ind  like ? or u.name like ? or u.hire like ? or u.lease like ? or  m.com_heat like ? or  m.com_clean  like ? or  m.com_ev  like ? or  m.com_es  like ? or  m.com_maintain  like ? or  m.com_insur like ? or m.com_labor like ? or m.com_water like ? or m.com_ele like ?\r\n"
-					+ "	  ) as t limit ? offset ?;");
-			 pstmt.setString(1, "%" + search + "%");
-			 pstmt.setString(2, "%" + search + "%");
-			 pstmt.setString(3, "%" + search + "%");
-			 pstmt.setString(4, "%" + search + "%");
-			 pstmt.setString(5, "%" + search + "%");
-			 pstmt.setString(6, "%" + search + "%");
-			 pstmt.setString(7, "%" + search + "%");
-			 pstmt.setString(8, "%" + search + "%");
-			 pstmt.setString(9, "%" + search + "%");
-			 pstmt.setString(10, "%" + search + "%");
-			 pstmt.setString(11, "%" + search + "%");
-			 pstmt.setString(12, "%" + search + "%");
-			 pstmt.setString(13, "%" + search + "%");
-			 pstmt.setString(14, "%" + search + "%");
-			 pstmt.setString(15, "%" + search + "%");
-			 pstmt.setString(16, "%" + search + "%");
-			 pstmt.setInt(17, subPaging.getLimit());
-			 pstmt.setInt(18,
-			 subPaging.getLimit() * (subPaging.getCurrentPage() - 1));
-			
+							+ "	 having w.no like ? or w.water_ind like ? or  e.ele_basic  like ? or e.ele_ind  like ? or u.name like ? or u.hire like ? or u.lease like ? or  m.com_heat like ? or  m.com_clean  like ? or  m.com_ev  like ? or  m.com_es  like ? or  m.com_maintain  like ? or  m.com_insur like ? or m.com_labor like ? or m.com_water like ? or m.com_ele like ?\r\n"
+							+ "	  ) as t limit ? offset ?;");
+			pstmt.setString(1, "%" + search + "%");
+			pstmt.setString(2, "%" + search + "%");
+			pstmt.setString(3, "%" + search + "%");
+			pstmt.setString(4, "%" + search + "%");
+			pstmt.setString(5, "%" + search + "%");
+			pstmt.setString(6, "%" + search + "%");
+			pstmt.setString(7, "%" + search + "%");
+			pstmt.setString(8, "%" + search + "%");
+			pstmt.setString(9, "%" + search + "%");
+			pstmt.setString(10, "%" + search + "%");
+			pstmt.setString(11, "%" + search + "%");
+			pstmt.setString(12, "%" + search + "%");
+			pstmt.setString(13, "%" + search + "%");
+			pstmt.setString(14, "%" + search + "%");
+			pstmt.setString(15, "%" + search + "%");
+			pstmt.setString(16, "%" + search + "%");
+			pstmt.setInt(17, subPaging.getLimit());
+			pstmt.setInt(18,
+					subPaging.getLimit() * (subPaging.getCurrentPage() - 1));
+
 			try {
 				rs = pstmt.executeQuery();
 				while (rs.next()) {
@@ -67,7 +65,6 @@ public class SubDAO {
 				System.out.println(" error :  subSelectAll");
 			}
 		} else {
-			System.out.println("ee");
 			pstmt = conn.prepareStatement(
 					"select * from ( select w.no 'w.no' , w.water_ind 'w.water_ind',e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind', u.name 'u.name',u.hire 'u.hire' , u.lease 'u.lease' , u.rent_fee 'u.rent_fee' , u.period 'u.period', u.size 'u.size', u.coming 'u.coming', u.leaving 'u.leaving' , m.memberId 'm.memberId', m.name 'm.name', m.total_size 'm.total_size', m.com_heat 'm.com_heat', m.com_clean 'm.com_clean', m.com_ev 'm.com_ev', m.com_es 'm.com_es',m.com_maintain 'm.com_maintain', m.com_insur 'm.com_insur', m.com_labor 'm.com_labor', m.com_water 'm.com_water', m.com_ele 'm.com_ele' from ele e, water w, unit u , main m where w.no = e.no and e.no =w.no group by e.no ) as t limit ? offset ? ");
 			pstmt.setInt(1, subPaging.getLimit());
@@ -84,8 +81,6 @@ public class SubDAO {
 							rs.getInt(16), rs.getInt(17), rs.getInt(18),
 							rs.getInt(19), rs.getInt(20), rs.getInt(21),
 							rs.getInt(22), rs.getInt(23), rs.getInt(24));
-					
-					System.out.println(sub.getComing());
 					SubMixed.add(sub);
 				}
 			} catch (Exception e) {
@@ -301,33 +296,122 @@ public class SubDAO {
 			return false;
 	}
 
-	public int subAllCount(Connection conn, String search) {
+	public int subMainAllCount(Connection conn, String search) {
 		int result = 0;
 		try {
 			if (search != null) {
 				pstmt = conn.prepareStatement(
 						"select count(t.allc) from ( select w.no 'w.no' , w.water_ind 'w.water_ind', e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind', u.name allc, u.hire 'u.hire' , u.lease 'u.lease' , u.rent_fee 'u.rent_fee' , u.period 'u.period', u.size 'u.size', u.coming 'u.coming', u.leaving 'u.leaving' , m.memberId 'm.memberId', m.name 'm.name', m.total_size 'm.total_size', m.com_heat 'm.com_heat', m.com_clean 'm.com_clean', m.com_ev 'm.com_ev', m.com_es 'm.com_es', m.com_maintain 'm.com_maintain', m.com_insur 'm.com_insur', m.com_labor 'm.com_labor', m.com_water 'm.com_water', m.com_ele 'm.com_ele' from ele e, water w, unit u , main m where w.no = e.no and e.no =w.no group by e.no "
-						+ "	 having w.no like ? or w.water_ind like ? or  e.ele_basic  like ? or e.ele_ind  like ? or u.name like ? or u.hire like ? or u.lease like ? or  m.com_heat like ? or  m.com_clean  like ? or  m.com_ev  like ? or  m.com_es  like ? or  m.com_maintain  like ? or  m.com_insur like ? or m.com_labor like ? or m.com_water like ? or m.com_ele like ? "
-						+ " ) as t");
-				 pstmt.setString(1, "%" + search + "%");
-				 pstmt.setString(2, "%" + search + "%");
-				 pstmt.setString(3, "%" + search + "%");
-				 pstmt.setString(4, "%" + search + "%");
-				 pstmt.setString(5, "%" + search + "%");
-				 pstmt.setString(6, "%" + search + "%");
-				 pstmt.setString(7, "%" + search + "%");
-				 pstmt.setString(8, "%" + search + "%");
-				 pstmt.setString(9, "%" + search + "%");
-				 pstmt.setString(10, "%" + search + "%");
-				 pstmt.setString(11, "%" + search + "%");
-				 pstmt.setString(12, "%" + search + "%");
-				 pstmt.setString(13, "%" + search + "%");
-				 pstmt.setString(14, "%" + search + "%");
-				 pstmt.setString(15, "%" + search + "%");
-				 pstmt.setString(16, "%" + search + "%");
+								+ "	 having w.no like ? or w.water_ind like ? or  e.ele_basic  like ? or e.ele_ind  like ? or u.name like ? or u.hire like ? or u.lease like ? or  m.com_heat like ? or  m.com_clean  like ? or  m.com_ev  like ? or  m.com_es  like ? or  m.com_maintain  like ? or  m.com_insur like ? or m.com_labor like ? or m.com_water like ? or m.com_ele like ? "
+								+ " ) as t");
+				pstmt.setString(1, "%" + search + "%");
+				pstmt.setString(2, "%" + search + "%");
+				pstmt.setString(3, "%" + search + "%");
+				pstmt.setString(4, "%" + search + "%");
+				pstmt.setString(5, "%" + search + "%");
+				pstmt.setString(6, "%" + search + "%");
+				pstmt.setString(7, "%" + search + "%");
+				pstmt.setString(8, "%" + search + "%");
+				pstmt.setString(9, "%" + search + "%");
+				pstmt.setString(10, "%" + search + "%");
+				pstmt.setString(11, "%" + search + "%");
+				pstmt.setString(12, "%" + search + "%");
+				pstmt.setString(13, "%" + search + "%");
+				pstmt.setString(14, "%" + search + "%");
+				pstmt.setString(15, "%" + search + "%");
+				pstmt.setString(16, "%" + search + "%");
 			} else {
 				pstmt = conn.prepareStatement(
 						"select count(t.allc) from ( select w.no 'w.no' , w.water_ind 'w.water_ind',e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind', u.name 'u.name',u.hire 'u.hire' , u.lease 'u.lease' , u.rent_fee 'u.rent_fee' , u.period 'u.period', u.size allc, u.coming 'u.coming', u.leaving 'u.leaving' , m.memberId 'm.memberId', m.name 'm.name', m.total_size 'm.total_size', m.com_heat 'm.com_heat', m.com_clean 'm.com_clean', m.com_ev 'm.com_ev', m.com_es 'm.com_es',m.com_maintain 'm.com_maintain', m.com_insur 'm.com_insur', m.com_labor 'm.com_labor', m.com_water 'm.com_water', m.com_ele 'm.com_ele' from ele e, water w, unit u , main m where w.no = e.no and e.no =w.no group by e.no ) as t");
+			}
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				result = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			System.out.println(" error :  subAllCount");
+			e.getMessage();
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+		return result;
+	}
+	
+	
+	//
+	public ArrayList<Sub> subSelectAll(Connection conn,
+			Map<String, Object> pagingValues) throws SQLException {
+		ArrayList<Sub> SubMixed = new ArrayList<>();
+		SubPaging subPaging = (SubPaging) pagingValues.get("paging");
+
+		if (pagingValues.get("search") != null) {
+			String search = (String) pagingValues.get("search");
+			pstmt = conn.prepareStatement(
+					"select * from ( select w.no test , w.water_ind 'w.water_ind', e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind' from water w, ele e where w.no = e.no and e.no =w.no group by e.no "
+							+ "	 having w.no like ? or w.water_ind like ? or  e.ele_basic  like ? or e.ele_ind  like ? "
+							+ "	  ) as t limit ? offset ?");
+			pstmt.setString(1, "%" + search + "%");
+			pstmt.setString(2, "%" + search + "%");
+			pstmt.setString(3, "%" + search + "%");
+			pstmt.setString(4, "%" + search + "%");
+			pstmt.setInt(5, subPaging.getLimit());
+			pstmt.setInt(6,
+					subPaging.getLimit() * (subPaging.getCurrentPage() - 1));
+			System.out.println("tests");
+			try {
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					sub = new Sub(rs.getInt(1), rs.getInt(2), rs.getInt(3),
+							rs.getInt(4));
+					SubMixed.add(sub);
+				}
+			} catch (Exception e) {
+				e.getMessage();
+				System.out.println(" error :  subSelectAll");
+			}
+		} else {
+			System.out.println("tests");
+			System.out.println( subPaging.getLimit() +" ," + subPaging.getLimit()+ ", " + subPaging.getCurrentPage());
+			pstmt = conn.prepareStatement(
+					"select * from ( select w.no test , w.water_ind 'w.water_ind',e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind' from ele e, water w where w.no = e.no group by e.no ) as t limit ? offset ? ");
+			pstmt.setInt(1, subPaging.getLimit());
+			pstmt.setInt(2,
+					subPaging.getLimit() * (subPaging.getCurrentPage() - 1));
+			try {
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					sub = new Sub(rs.getInt(1), rs.getInt(2), rs.getInt(3),
+							rs.getInt(4));
+					SubMixed.add(sub);
+				}
+			} catch (Exception e) {
+				System.out.println(" error :  subSelectAll");
+				e.getMessage();
+			}
+		}
+		JdbcUtil.close(rs);
+		JdbcUtil.close(pstmt);
+		return SubMixed;
+	}
+
+	public int subAllCount(Connection conn, String search) {
+		int result = 0;
+		try {
+			if (search != null) {
+				System.out.println("subAllCount - if" );
+				pstmt = conn.prepareStatement(
+						"select count(t.test) from ( select w.no test , w.water_ind 'w.water_ind', e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind' where w.no = e.no and e.no =w.no group by e.no "
+								+ "	 having w.no like ? or w.water_ind like ? or  e.ele_basic  like ? or e.ele_ind  like ? "
+								+ "	  ) as t ");
+				pstmt.setString(1, "%" + search + "%");
+				pstmt.setString(2, "%" + search + "%");
+				pstmt.setString(3, "%" + search + "%");
+				pstmt.setString(4, "%" + search + "%");
+			} else {
+				System.out.println("subAllCount - else" );
+				pstmt = conn.prepareStatement(
+						"select count(t.test) from ( select w.no test , w.water_ind 'w.water_ind',e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind' from ele e, water w where w.no = e.no group by e.no ) as t ");
 			}
 			rs = pstmt.executeQuery();
 			if (rs.next()) {

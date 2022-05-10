@@ -9,32 +9,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jdbc.connection.ConnectionProvider;
-import main.model.Main;
-import main.service.MainService;
 import mvc.command.CommandHandler;
 import sub.model.Sub;
 import sub.model.SubPaging;
 import sub.service.SubService;
-import unit.model.Unit;
-import unit.service.ReadUnitService;
 
 public class SubListHandler implements CommandHandler {
 
-	private static final String FORM_VIEW = "/WEB-INF/view/subList2.jsp";
+	private static final String FORM_VIEW = "/WEB-INF/view/subMainList.jsp";
+	private static final String FORM_VIEWS = "/WEB-INF/view/subList.jsp";
 	private SubService subService = new SubService();
-	private MainService mainService = new MainService();
-	private ReadUnitService unitService = new ReadUnitService();
 	String search = null;
 	SubPaging sp = null;
 	private Map<String, Object> pagingValues = new HashMap<>();
-	private Map<Object, Object> result1 = new HashMap<>();
-	private Map<Object, Object> result2 = new HashMap<>();
 	int total, startPage, currentPage, limit;
 
 	@Override
 	public String process(HttpServletRequest rq, HttpServletResponse rs)
 			throws Exception {
 		try (Connection conn = ConnectionProvider.getConnection()) {
+
 			//
 			if (rq.getParameter("startPage") != null)
 				startPage = Integer.parseInt(rq.getParameter("startPage"));
@@ -52,41 +46,41 @@ public class SubListHandler implements CommandHandler {
 				startPage = 1;
 				currentPage = 1;
 			}
-			total = subService.subAllCount(search);
+			if (rq.getParameter("uri") != null)
+				total = subService.subAllCount(search);
+			else
+				total = subService.subMainAllCount(search);
 			//
 			if (rq.getParameter("limit") != null)
 				limit = Integer.parseInt(rq.getParameter("limit"));
 			else
 				limit = 10;
-
+			//
 			sp = new SubPaging(total, startPage, currentPage, limit);
 			pagingValues.put("paging", sp);
-			if (rq.getParameter("autoInsert") != null) {
-				int num = Integer.parseInt(rq.getParameter("num"));
-				subService.autoInsertSubService(num);
-			}
-			ArrayList<Sub> sub = subService.listSubService(pagingValues);
-			rq.setAttribute("sub", sub);
-			rq.setAttribute("search", pagingValues);
+
 			rq.setAttribute("paging", sp);
-			if (rq.getMethod().equalsIgnoreCase("GET")) {
-				return processForm(rq, rs);
-			} else if (rq.getMethod().equalsIgnoreCase("POST")) {
-				return processSubmit(rq, rs);
-			} else {
-				rs.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-				return null;
+			rq.setAttribute("search", pagingValues);
+
+			if (rq.getParameter("uri") == null) {
+				System.out.println("rq.getParameter(\"uri\") != null");
+				ArrayList<Sub> sub = subService.listSubService(pagingValues);
+				rq.setAttribute("sub", sub);
+				return processSubList(rq, rs);
 			}
+			// if (rq.getParameter("autoInsert") != null) {
+			// int num = Integer.parseInt(rq.getParameter("num"));
+			// subService.autoInsertSubService(num);
+			// }
+			ArrayList<Sub> sub = subService.listSubMainService(pagingValues);
+			rq.setAttribute("sub", sub);
+			return FORM_VIEW;
 		}
 	}
-	private String processForm(HttpServletRequest request, HttpServletResponse rs) {
-		
-		
-		return FORM_VIEW;
-	}
 
-	private String processSubmit(HttpServletRequest rq,
+	private String processSubList(HttpServletRequest rq,
 			HttpServletResponse rs) {
-		return FORM_VIEW;
+
+		return FORM_VIEWS;
 	}
 }

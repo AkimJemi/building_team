@@ -1,9 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,8 +12,22 @@
 	text-align: center;
 	align-items: center;
 }
+
+a {
+	text-decoration: none;
+}
+
+.header {
+	position: absolute;
+	top: 50px;
+	left: 50px;
+	margin: 30px;
+}
+
+input {
+	width: 100%;
+}
 </style>
-<title>Insert title here</title>
 </head>
 <script type="text/javascript">
 	
@@ -42,9 +52,12 @@
 	}
 </script>
 <body class="Containner_Main">
+	<div class="header">
+		<a href="subRead.do">[ 추가하기 ] </a> <br /><br /> <a href="<%=request.getContextPath()%>/subList.do?uri=main">[ 뒤로가기 ] </a>
+	</div>
 	<form action="subList.do" method="post">
 		<table border='1' width="700">
-			<tr>
+			<%-- <tr>
 				<td colspan="7" height="50px">
 					<c:set var="uriSetting" value="currentPage=${paging.currentPage}&startPage=${paging.startPage}&limit=${paging.limit }" />
 					<input type="button" value="등록" onclick="location.href = 'subRead.do'" />
@@ -52,8 +65,8 @@
 						추가5 ]</a> <a href="javascript:void(0)" onclick="autoInsert(10, '${uriSetting }')">[ 자동 추가10 ]</a> <a href="javascript:void(0)"
 						onclick="autoInsert(15, '${uriSetting }')">[ 자동 추가15 ]</a>
 				</td>
-			</tr>
-			<tr>
+			</tr> --%>
+			<%-- <tr>
 				<td colspan="7" height="50px">
 					<c:set var="limitSetting" value="currentPage=${paging.currentPage}&startPage=${paging.startPage}" />
 					<input type="hidden" name="limit" value="${paging.limit }" />
@@ -63,10 +76,11 @@
 					<input type="button" value="limit(15)" onclick="location.href = 'subList.do?limit=15&${limitSetting}'" />
 					<input type="button" value="limit(20)" onclick="location.href = 'subList.do?limit=20&${limitSetting}'" />
 				</td>
-			</tr>
+			</tr> --%>
 			<tr>
-				<td colspan="7" height="50px">[ total : ${paging.total } , startPage : ${paging.startPage } , currentPage : ${paging.currentPage } , limit :
-					${paging.limit } , endPage : ${ paging.endPage}] [ ${ search.search} ]</td>
+				<td colspan="7" height="50px">
+					<h1>수도세, 전기세 관리</h1>
+				</td>
 			</tr>
 			<tr>
 				<td colspan="7" height="50px">
@@ -81,7 +95,6 @@
 				<td>전기 개인세</td>
 				<td>수정</td>
 				<td>삭제</td>
-				<td>영수증 확인</td>
 			</tr>
 			<c:forEach var="sub" items="${sub }">
 				<tr>
@@ -99,15 +112,12 @@
 					<td>
 						<input type="button" value="삭제" onclick="deleteConfirm('${sub.no}')" />
 					</td>
-						<td>
-						<input type="button" value="확인" onclick="location.href = 'receipt.do?no=${sub.no }'" />
-					</td>
 				</tr>
 			</c:forEach>
 			<tr>
 				<td colspan="22">
 					<c:if test="${articlePage.startPage>5 }">
-						<a href="list.do?pageNo=${articlePage.startPage -5 }"> [이전]</a>
+						<a href="subList.do?pageNo=${articlePage.startPage -5 }"> [이전]</a>
 					</c:if>
 					<c:if test="${paging.total/paging.limit<=5 }">
 						<c:forEach var="currentPage" begin="${paging.startPage }" end="${paging.total/paging.limit}">

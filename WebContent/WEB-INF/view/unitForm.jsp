@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 
@@ -96,12 +95,10 @@ if (request.getParameter("readOnly") != null) {
 					<c:if test="${errors.no }">호수를 입력하세요</c:if>
 				</div>
 			</div>
-			<input type="hidden"
-				value="${ ctxPath = pageContext.request.contextPath }" />
+			<input type="hidden" value="${ ctxPath = pageContext.request.contextPath }" />
 			<div class="Container_label">
-				<input type="submit" value="등록" /> <input
-					type="button" value="돌아가기"
-					onclick="location.href = '${ctxPath}/index.jsp'" />
+				<input type="submit" value="등록" />
+				<input type="button" value="돌아가기" onclick="location.href = '${ctxPath}/index.jsp'" />
 			</div>
 		</div>
 	</form>

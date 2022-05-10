@@ -1,9 +1,7 @@
 package unit.service;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.SQLException;
-
 
 import jdbc.connection.ConnectionProvider;
 import unit.dao.UnitDAO;

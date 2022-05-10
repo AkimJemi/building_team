@@ -82,13 +82,10 @@ alert( ${subReq.no } + "호실은 이미 존재합니다.");
 		</script>
 	</c:if>
 	<input type="hidden" value="${ ctxPath = pageContext.request.contextPath }" />
-	${errors.no } || ${errors.water_ind } || ${errors.ele_basic } || ${errors.ele_ind } ||<%=request.getAttribute("readOnly")%>
-	//
-	<%=readOnly%>
 	<form method="post" action="subRead.do">
 		<div class="Container_Main">
 			<div class="Container_Inner">
-				<div class="Container_Box_Main">수도세</div>
+				<div class="Container_Box_Main">영수증</div>
 				<div class="Container_Box">
 					<div class="Container_label">호실 :</div>
 					<input type="text" name="no" value="${sub.no }" <%=readOnly%> />
