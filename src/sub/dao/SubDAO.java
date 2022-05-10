@@ -66,6 +66,7 @@ public class SubDAO {
 				e.getMessage();
 				System.out.println(" error :  subSelectAll");
 			}
+			dd
 		} else {
 			System.out.println("ee");
 			pstmt = conn.prepareStatement(
