@@ -25,6 +25,9 @@ public class Unit {
 		this.hire = hire;
 	}
 
+	public Unit() {
+	}
+
 	public void setLease(String lease) {
 		this.lease = lease;
 	}
@@ -49,8 +52,7 @@ public class Unit {
 		this.leaving = leaving;
 	}
 
-	public Unit() {
-	}
+
 
 	public Unit(int no, String name, String hire, String lease, int rent_fee, String period, int size) {
 		this.hire = hire;
@@ -78,7 +80,6 @@ public class Unit {
 		this.size = size;
 		this.coming = coming;
 		this.leaving = leaving;
-
 	}
 
 	
@@ -116,6 +117,12 @@ public class Unit {
 
 	public Date getLeaving() {
 		return leaving;
+	}
+
+	public Unit(int size, Date coming, String name) {
+		this.size = size;
+		this.coming = coming;
+		this.name = name;
 	}
 
 }

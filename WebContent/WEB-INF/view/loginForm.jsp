@@ -3,86 +3,86 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&display=swap" rel="stylesheet">
 <style type="text/css">
-body {
-	display: flex;
-	justify-content: center;
-	text-align: center;
-	align-items: center;
-	height: 500px;
+body{
+font-family: 'Open Sans', sans-serif;
+} 
+#joinForm {
+  position:absolute;
+  width:400px;
+  height:400px;
+  padding: 30px, 20px;
+  background-color:#FFFFFF;
+  text-align:center;
+  top:40%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  border-radius: 15px;
 }
-
-form {
-	display: flex;
-	justify-content: center;
-	text-align: center;
-	align-items: center;
-	background-color: gray;
-	width: 400px;
-	height: 300px;
+#FormText{
+	font-size: 25px;
+	font-weight: bold;
 }
-
-.divBox {
-	
+.textForm {
+  border-bottom: 2px solid #adadad;
+  margin: 30px;
+  padding: 10px 10px;
 }
-
-.idForm {
-	display: flex;
-	justify-content: space-between;
-	align-items:center;
-	margin: 20px;
-	margin: 20px;
+.basic{
+  width: 100%;
+  border:none;
+  outline:none;
+  color: #636e72;
+  font-size:16px;
+  height:25px;
+  background: none;
 }
-
-.popUp {
-	position: absolute;
-	top: 150px;
-	left: 47%;
+#submit_btn{
+   background-color: #a3a1a1;
+   color: #EAEAEA;
+   padding: 15px 30px;
+   border-radius: 15px;
+   border: none;
+   width:90%;
+   font-weight: bold;
+   font-size: 15px;
 }
-
-.submitButton {
-	height: 30px;
-	width: 60px;
-}
-
-.textArea {
-	width: 100px;
-	height: 30px;
+#submit_btn:hover{
+   background-color: #8C8C8C;
+   color: #EAEAEA;
 }
 </style>
 <meta charset="UTF-8">
 <title>로그인</title>
 </head>
 <body>
-	<div class="popUp">
+	<div>
 		<h3>
 			<c:if test="${errors.password }">암호 입력</c:if>
 		</h3>
 	</div>
-	<div class="popUp">
+	<div>
 		<h3>
 			<c:if test="${errors.id }">아이디 입력</c:if>
 		</h3>
 	</div>
 
-	<form action="login.do" method="post">
-		<div class="divBox">
-			<div class="idForm">
-				<c:if test="${errors.idOrPwNotMatch }">  
+	<form id="joinForm" action="login.do" method="post">
+		<div id="FormText">Login</div>
+					<c:if test="${errors.idOrPwNotMatch }">  
 		아이디와 암호와 일치하지 않습니다.
 		</c:if>
-				<h4>아이디 :</h4>
-				<input class="textArea" type="text" name="id" value="${param.id }">
-			</div>
-			<div class="idForm">
-				<h4>암 호 :</h4>
-				<input class="textArea" type="password" name="password">
-			</div>
-			<div class="idForm">
-				<input class="submitButton" type="submit" value="로그인">
-			</div>
+		<div class="textForm">
+					<input class="basic" type="text" name="id" value="${param.id }">
 		</div>
+		<div class="textForm">
+					<input  class="basic"  type="password" name="password">
+		</div>
+					
+					<input  id="submit_btn" type="submit" value="로그인">
 	</form>
 </body>
 </html>

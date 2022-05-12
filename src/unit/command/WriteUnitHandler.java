@@ -1,5 +1,8 @@
 package unit.command;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +19,7 @@ public class WriteUnitHandler implements CommandHandler {
 	private WriteUnitService writeService = new WriteUnitService();
 
 	@Override
-	public String process(HttpServletRequest req, HttpServletResponse res) {
+	public String process(HttpServletRequest req, HttpServletResponse res) throws ParseException {
 		if (req.getMethod().equalsIgnoreCase("GET")) {
 			return processForm(req, res);
 		} else if (req.getMethod().equalsIgnoreCase("POST")) {
@@ -27,33 +30,40 @@ public class WriteUnitHandler implements CommandHandler {
 		}
 	}
 
-	private String processForm(HttpServletRequest req, HttpServletResponse res) {
+	private String processForm(HttpServletRequest req,
+			HttpServletResponse res) {
 		return FORM_VIEW;
 	}
 
-	private String processSubmit(HttpServletRequest req, HttpServletResponse res) {
+	private String processSubmit(HttpServletRequest req,
+			HttpServletResponse res) throws ParseException {
+		System.out.println("test");
 		Map<String, Boolean> errors = new HashMap<>();
+
+		System.out.println("test1");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String comingbefore = req.getParameter("coming");
+		Date coming = new Date(sdf.parse(comingbefore).getTime());
+		String leavingbefore = req.getParameter("leaving");
+		Date leaving = new Date(sdf.parse(leavingbefore).getTime());
+
 		req.setAttribute("errors", errors);
-        Unit unit =  new Unit(
-        		Integer.parseInt(req.getParameter("no")) ,
-        		req.getParameter("name"),
-        		req.getParameter("hire"),
-        		req.getParameter("lease"),
-        		Integer.parseInt(req.getParameter("rent_fee")),
-        		req.getParameter("period"),
-        		Integer.parseInt(req.getParameter("size"))
-        		);
-//		User user = (User) req.getSession(false).getAttribute("authUser");
-//		WriteRequest writeReq = createWriteRequest(unit, req);
-//		writeReq.validate(errors);
+		Unit unit = new Unit( Integer.parseInt(req.getParameter("no")), req.getParameter("name"),
+				req.getParameter("hire"), req.getParameter("lease"),
+				Integer.parseInt(req.getParameter("rent_fee")),
+				req.getParameter("period"),
+				Integer.parseInt(req.getParameter("size")), coming, leaving);
+		// User user = (User) req.getSession(false).getAttribute("authUser");
+		// WriteRequest writeReq = createWriteRequest(unit, req);
+		// writeReq.validate(errors);
 
 		if (!errors.isEmpty()) {
 			return FORM_VIEW;
 		}
+		System.out.println("test3" + unit.getNo());
 		int newUnitNo = writeService.write(unit);
 		req.setAttribute("newUnitNo", newUnitNo);
-		
 
-		return "/WEB-INF/view/newUnitSuccess.jsp";
+		return "/unit/read.do?no=" + unit.getNo();
 	}
 }

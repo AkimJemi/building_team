@@ -6,7 +6,6 @@ import sub.model.Sub;
 import unit.model.Unit;
 
 public class Main {
-
 	private String memberid;
 	private String name;
 	private int password;
@@ -29,6 +28,22 @@ public class Main {
 
 	public Main() {
 	}
+	public Main(String memberid, int total_size, int com_heat, int com_clean,
+			int com_ev, int com_es, int com_maintain, int com_insur,
+			int com_labor, int com_water, int com_ele) {
+		this.memberid = memberid;
+		this.total_size = total_size;
+		this.com_heat = com_heat;
+		this.com_clean = com_clean;
+		this.com_ev = com_ev;
+		this.com_es = com_es;
+		this.com_maintain = com_maintain;
+		this.com_insur = com_insur;
+		this.com_labor = com_labor;
+		this.com_water = com_water;
+		this.com_ele = com_ele;
+	}
+
 	public Main(int total_size, int com_heat, int com_clean, int com_ev,
 			int com_es, int com_maintain, int com_insur, int com_labor,
 			int com_water, int com_ele) {
@@ -68,9 +83,12 @@ public class Main {
 		this.com_labor = main.getCom_labor() / main.getTotal_size()
 				* unit.getSize();
 	}
+
 	public int getTotal_All() {
 		return total_All;
 	}
+	
+	
 	public int getTotal_water() {
 		return total_water;
 	}

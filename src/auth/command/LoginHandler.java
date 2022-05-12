@@ -47,11 +47,9 @@ public class LoginHandler implements CommandHandler {
 		if(!errors.isEmpty()) {
 			return FORM_VIEW;
 		}
-		
 		try {
 			User user =loginService.login(id, password);
 			req.getSession().setAttribute("authUser", user);
-//			return "unit/list.do";
 			res.sendRedirect("unit/list.do"); 
 			return null;
 		}catch(LoginFailException e) {

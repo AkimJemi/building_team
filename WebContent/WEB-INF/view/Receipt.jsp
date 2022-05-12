@@ -1,50 +1,111 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
-<%@ page import="main.model.Main"%>
 <%
 String readOnly = "readOnly";
 if (request.getAttribute("readOnly") != null && (Boolean) request.getAttribute("readOnly") == false) {
 	readOnly = "";
 }
 %>
-
 <html>
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&display=swap"
+	rel="stylesheet">
 <meta charset="UTF-8">
 <title>수도세, 전기세 페이지</title>
 <style>
-body {
-	
+.container {
+	width: 50%;
+	margin: auto;
 }
 
-.Container_Main {
-	display: flex;
-	height: 1000px;
-	width: 100%;
+input {
+	border: none;
+	border-radius: 2px;
+	height: 20px;
+	float: right;
+}
+
+input:focus {
+	outline: none;
+}
+
+.input1 {
+	border: none;
+	border-radius: 2px;
+	height: 20px;
+	float: right;
+	background-color: #EAEAEA;
+	color: #515151;
+}
+
+.input1:focus {
+	outline: none;
+}
+
+#main_div {
+	border-bottom: solid 2px gray;
+	margin-bottom: 20px;
+	margin-top: 50px;
+}
+
+#main_text {
+	font-weight: bold;
+	font-size: 25px;
 	text-align: center;
-	justify-content: center;
-	flex-direction: center;
-	align-items: center;
 }
 
-.Container_Box_Main {
-	font-size: 40px;
+.text_div {
+	margin: 3px 10px 0 10px;
+	padding: 5px;
+	border-bottom: solid 1px #EAEAEA;
 }
 
-.Container_label {
-	margin: 10px 10px;
+.text_id {
+	display: inline-block;
+	width: 200px;
+	font-weight: 400;
+	font-size: 14px;
+	color: #8C8C8C;
 }
 
-.Container_Box {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+.text_id1 {
+	display: inline-block;
+	width: 200px;
+	font-weight: 400;
+	font-size: 14px;
+	color: #515151;
+	font-weight: bold;
 }
 
-.Container_Box input {
-	text-align: right;
-	height: 80%;
+.text_div_total {
+	margin: 0 5px 10px 5px;
+	padding: 5px;
+	border-bottom: solid 1px #EAEAEA;
+	background-color: #EAEAEA;
+}
+
+.submit_btn {
+	background-color: #353535;
+	color: #EAEAEA;
+	padding: auto 30px;
+	border-radius: 2px;
+	border: none;
+	width: 100px;
+	height: 30px;
+	font-size: 15px;
+	font-weight: 400;
+	margin: 10px 5px;
+}
+
+.submit_btn:hover {
+	background-color: #8C8C8C;
+	color: #EAEAEA;
 }
 </style>
 <%
@@ -75,107 +136,108 @@ alert( ${subReq.no } + "호실은 이미 존재합니다.");
 }
 %>
 </head>
+
 <body>
-	<c:if test="${errors.ele_ind  || errors.water_ind  ||errors.ele_basic ||errors.ele_ind  }">
+	<c:if
+		test="${errors.ele_ind  || errors.water_ind  ||errors.ele_basic ||errors.ele_ind  }">
 		<script type="text/javascript">
 			alert("빈 칸 없이 입력해주세요");
 		</script>
 	</c:if>
-	<input type="hidden" value="${ ctxPath = pageContext.request.contextPath }" />
-	<form method="post" action="subRead.do">
-		<div class="Container_Main">
-			<div class="Container_Inner">
-				<div class="Container_Box_Main">영수증</div>
-				<div class="Container_Box">
-					<div class="Container_label">호실 :</div>
-					<input type="text" name="no" value="${sub.no }" <%=readOnly%> />
-				</div>
-				<div class="Container_Box">
-					<div class="Container_label">상가명 :</div>
-					<input type="text" name="water_ind" value="${unit.name }" <%=readOnly%> />
-				</div>
-				<div class="Container_Box">
-					<div class="Container_label">면적 :</div>
-					<input type="text" name="ele_basic" value="${unit.size }" <%=readOnly%> />
 
-				</div>
-				<div class="Container_Box">
-					<div class="Container_label">개인 수도세 :</div>
-					<input type="text" name="ele_ind" value="${sub.water_ind }" <%=readOnly%> />
-				</div>
-				<br />
-				<div class="Container_Box">
-					<div class="Container_label">공동 수도세 :</div>
-					<input type="text" name="com_water" value="${recipt.com_pri_water  }" <%=readOnly%> />
-				</div>
-				<div class="Container_Box">
-					<div class="Container_label">수도세 총합 :</div>
-					<input type="text" name="ele_ind" value="${recipt.total_water }" <%=readOnly%> />
-				</div>
-				<div class="Container_Box">
-					<div class="Container_label">기본 전기세 :</div>
-					<input type="text" name="ele_ind" value="${sub.ele_basic }" <%=readOnly%> />
-				</div>
-				<div class="Container_Box">
-					<div class="Container_label">개인 전기세 :</div>
-					<input type="text" name="ele_ind" value="${sub.ele_ind }" <%=readOnly%> />
-				</div>
-				<div class="Container_Box">
-					<div class="Container_label">공동 전기세 :</div>
-					<input type="text" name="ele_ind" value="${recipt.com_pri_ele }" <%=readOnly%> />
-				</div>
-				<div class="Container_Box">
-					<div class="Container_label">전기세 총합:</div>
-					<input type="text" name="ele_ind" value="${recipt.total_ele}" <%=readOnly%> />
-				</div>
-				<div class="Container_Box">
-					<div class="Container_label">난방비:</div>
-					<input type="text" name="ele_ind" value="${recipt.com_heat }" <%=readOnly%> />
-				</div>
-				<div class="Container_Box">
-					<div class="Container_label">청소비 :</div>
-					<input type="text" name="com_clean" value="${recipt.com_clean }" <%=readOnly%> />
-				</div>
-				<div class="Container_Box">
-					<div class="Container_label">엘레베이터 유지비 :</div>
-					<input type="text" name="com_ev" value="${recipt.com_ev  }" <%=readOnly%> />
-				</div>
-				<div class="Container_Box">
-					<div class="Container_label">에스커레이터 유지비 :</div>
-					<input type="text" name="com_es" value="${recipt.com_es  }" <%=readOnly%> />
-				</div>
-				<div class="Container_Box">
-					<div class="Container_label">유지비 :</div>
-					<input type="text" name="com_maintain" value="${recipt.com_maintain  }" <%=readOnly%> />
-				</div>
-				<div class="Container_Box">
-					<div class="Container_label">보험 :</div>
-					<input type="text" name="com_insur " value="${recipt.com_insur  }" <%=readOnly%> />
-				</div>
-				<div class="Container_Box">
-					<div class="Container_label">인건비 :</div>
-					<input type="text" name="ele_ind" value="${recipt.com_labor  }" <%=readOnly%> />
-				</div>
-				<div class="Container_Box">
-					<div class="Container_label">공동 관리비 :</div>
-					<input type="text" name="com_ele" value="${recipt.total_common}" <%=readOnly%> />
-					<input type="hidden" name="" value="" />
-				</div>
-				<div class="Container_Box">
-					<div class="Container_label">당월 부가세 :</div>
-					<input type="text" name="ele_ind" value="${recipt.total_All }" <%=readOnly%> />
-				</div>
-				<div class="Container_Box">
-					<div class="Container_label">납부기한 :</div>
-					<input type="text" name="ele_ind" value="" <%=readOnly%> />
-				</div>
-
-				<div class="Container_label">
-					<input type="button" value="확인" onclick="location.href = 'subRead.do'" />
-					<input type="button" value="돌아가기" onclick="location.href = 'subList.do'" />
-				</div>
-			</div>
+	<input type="hidden"
+		value="${ ctxPath = pageContext.request.contextPath }" />
+	<div class="container">
+		<div id="main_div">
+			<div id="main_text">영수증</div>
 		</div>
-	</form>
+		<form method="post" action="subRead.do">
+			<div class="text_div">
+				<span class="text_id">호실</span> <span><input type="text"
+					name="no" value="${sub.no }" <%=readOnly%> /></span>
+			</div>
+			<div class="text_div">
+				<span class="text_id">상가명</span> <span><input type="text"
+					name="water_ind" value="${unit.name }" <%=readOnly%> /></span>
+			</div>
+			<div class="text_div">
+				<span class="text_id">면적</span> <span><input type="text"
+					name="ele_basic" value="${unit.size }" <%=readOnly%> /></span>
+			</div>
+			<div class="text_div">
+				<span class="text_id">개인 수도세</span> <span><input type="text"
+					name="ele_ind" value="${sub.water_ind }" <%=readOnly%> /></span>
+			</div>
+			<div class="text_div">
+				<span class="text_id">공동 수도세</span> <span><input type="text"
+					name="com_water" value="${recipt.com_pri_water  }" <%=readOnly%> /></span>
+			</div>
+			<div class="text_div_total">
+				<span class="text_id1">수도세 총합</span> <span><input
+					class="input1" type="text" name="ele_ind"
+					value="${recipt.total_water }" <%=readOnly%> /></span>
+			</div>
+			<div class="text_div">
+				<span class="text_id">기본 전기세</span> <span><input type="text"
+					name="ele_ind" value="${sub.ele_basic }" <%=readOnly%> /></span>
+			</div>
+			<div class="text_div">
+				<span class="text_id">개인 전기세</span> <span><input type="text"
+					name="ele_ind" value="${sub.ele_ind }" <%=readOnly%> /></span>
+			</div>
+			<div class="text_div">
+				<span class="text_id">공동 전기세</span> <span><input type="text"
+					name="ele_ind" value="${recipt.com_pri_ele }" <%=readOnly%> /></span>
+			</div>
+			<div class="text_div_total">
+				<span class="text_id1">전기세 총합</span> <span><input type="text"
+					class="input1" name="ele_ind" value="${recipt.total_ele}"
+					<%=readOnly%> /></span>
+			</div>
+			<div class="text_div">
+				<span class="text_id">난방비</span> <span><input type="text"
+					name="ele_ind" value="${recipt.com_heat }" <%=readOnly%> /></span>
+			</div>
+			<div class="text_div">
+				<span class="text_id">청소비</span> <span><input type="text"
+					name="com_clean" value="${recipt.com_clean }" <%=readOnly%> /></span>
+			</div>
+			<div class="text_div">
+				<span class="text_id">엘레베이터 유지비</span> <span><input
+					type="text" name="com_ev" value="${recipt.com_ev  }" <%=readOnly%> /></span>
+			</div>
+			<div class="text_div">
+				<span class="text_id">에스커레이터 유지비</span> <span><input
+					type="text" name="com_es" value="${recipt.com_es  }" <%=readOnly%> /></span>
+			</div>
+			<div class="text_div">
+				<span class="text_id">유지비</span> <span><input type="text"
+					name="com_maintain" value="${recipt.com_maintain  }" <%=readOnly%> /></span>
+			</div>
+			<div class="text_div">
+				<span class="text_id">보험</span> <span><input type="text"
+					name="com_insur " value="${recipt.com_insur  }" <%=readOnly%> /></span>
+			</div>
+			<div class="text_div">
+				<span class="text_id">인건비</span> <span><input type="text"
+					name="ele_ind" value="${recipt.com_labor  }" <%=readOnly%> /></span>
+			</div>
+			<div class="text_div_total">
+				<span class="text_id1">공동 관리비</span> <span><input type="text"
+					class="input1" name="com_ele" value="${recipt.total_common}"
+					<%=readOnly%> /></span> <input type="hidden" name="" value="" />
+			</div>
+			<div class="text_div">
+				<span class="text_id">당월 부가세</span> <span><input type="text"
+					name="ele_ind" value="${recipt.total_All }" <%=readOnly%> /></span>
+			</div>
+			<div class="text_div">
+				<span class="text_id">납부기한</span> <span><input type="text"
+					name="ele_ind" value="" <%=readOnly%> /></span>
+			</div>
+			 <input class="submit_btn"
+				type="button" value="돌아가기" onclick="location.href = 'subList.do?uri=main'" />
+		</form>
+	</div>
 </body>
 </html>

@@ -8,14 +8,14 @@ public class SubPaging {
 	private int endPage;
 	private String search;
 	private int lastPage;
-	
+
 	public SubPaging(int total, int startPage, int currentPage, int limit) {
 		this.currentPage = currentPage;
 		this.total = total;
 		this.limit = limit;
 		this.startPage = startPage;
-		this.endPage = startPage +4;
-		this.lastPage = total/limit;
+		this.endPage = startPage + 4;
+		this.lastPage = total / limit;
 	}
 	public int getEndPage() {
 		return endPage;
@@ -59,5 +59,5 @@ public class SubPaging {
 	public void setLastPage(int lastPage) {
 		this.lastPage = lastPage;
 	}
-	
+
 }

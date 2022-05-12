@@ -2,6 +2,9 @@ package sub.model;
 
 import java.sql.Date;
 
+import main.model.Main;
+import unit.model.Unit;
+
 public class Sub {
 	private int no;
 	private int water_ind;
@@ -167,13 +170,13 @@ public class Sub {
 	private int total_ele;
 	private int total_common;
 	private int total_All;
-	
-	public Sub(int no, int water_ind, int ele_basic, int ele_ind, String unitName,
-			String hire, String lease, int rent_fee, String period, int size,
-			Date coming, Date leaving, String memberid, String name,
-			int total_size, int com_heat, int com_clean, int com_ev, int com_es,
-			int com_maintain, int com_insur, int com_labor, int com_water,
-			int com_ele) {
+
+	public Sub(int no, int water_ind, int ele_basic, int ele_ind,
+			String unitName, String hire, String lease, int rent_fee,
+			String period, int size, Date coming, Date leaving, String memberid,
+			String name, int total_size, int com_heat, int com_clean,
+			int com_ev, int com_es, int com_maintain, int com_insur,
+			int com_labor, int com_water, int com_ele) {
 		this.no = no;
 		this.water_ind = water_ind;
 		this.ele_basic = ele_basic;
@@ -326,6 +329,36 @@ public class Sub {
 
 	public int getTotal_All() {
 		return total_All;
+	}
+	public Sub(Sub sub, Main main, Unit unit) {
+		this.com_pri_water = main.getCom_water() / main.getTotal_size()
+				* unit.getSize();
+		this.com_pri_ele = main.getCom_ele() / main.getTotal_size()
+				* unit.getSize();
+		this.total_water = sub.getWater_ind() + com_pri_water;
+		this.total_ele = sub.getEle_basic() + sub.getEle_ind() + com_pri_ele;
+		this.total_common = (main.getCom_clean() + main.getCom_ev()
+				+ main.getCom_es() + main.getCom_labor() + main.getCom_insur()
+				+ main.getCom_maintain() + main.getCom_heat())
+				/ main.getTotal_size() * unit.getSize();
+		this.total_All = total_water + total_ele + total_common;
+		this.com_heat = main.getCom_heat() / main.getTotal_size()
+				* unit.getSize();
+		this.com_clean = main.getCom_clean() / main.getTotal_size()
+				* unit.getSize();
+		this.com_ev = main.getCom_ev() / main.getTotal_size() * unit.getSize();
+		this.com_es = main.getCom_es() / main.getTotal_size() * unit.getSize();
+		this.com_maintain = main.getCom_maintain() / main.getTotal_size()
+				* unit.getSize();
+		this.com_insur = main.getCom_insur() / main.getTotal_size()
+				* unit.getSize();
+		this.com_labor = main.getCom_labor() / main.getTotal_size()
+				* unit.getSize();
+		this.no = sub.getNo();
+		this.water_ind = sub.getWater_ind();
+		this.ele_basic = sub.getEle_basic();
+		this.ele_ind = sub.getEle_ind();
+		this.unitName = unit.getName();
 	}
 
 }

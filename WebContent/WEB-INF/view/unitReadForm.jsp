@@ -1,11 +1,84 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="u" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <title>상가정보</title>
+<style>
+
+body {
+	font-family: 'Open Sans', sans-serif;
+}
+
+.input_text {
+	border: solid 1px #D5D5D5;
+	border-radius: 2px;
+	height: 20px;
+	float: right;
+	margin: 0 5px;
+	text-align: right;
+
+}
+
+input:focus {
+	background-color: #E8F0FE;
+	outline: none;
+}
+
+.container {
+	width: 50%;
+	margin: auto;
+}
+
+#main_div {
+	border-bottom: solid 2px gray;
+	margin-bottom: 20px;
+	margin-top: 50px;
+}
+
+#main_text {
+	font-weight: bold;
+	font-size: 25px;
+}
+
+.text_div {
+	margin: 10px;
+	padding: 5px;
+	border-bottom: solid 1px #EAEAEA;
+}
+
+.text_id {
+	display: inline-block;
+	width: 200px;
+	font-weight: 400;
+	font-size: 14px;
+	color: #8C8C8C;
+}
+
+#btn_div {
+	float: right;
+	margin-top: 30px;
+}
+
+.submit_btn {
+	background-color: #353535;
+	color: #EAEAEA;
+	padding: auto 30px;
+	border-radius: 2px;
+	border: none;
+	width: 120px;
+	height: 30px;
+	font-size: 15px;
+	font-weight: 400;
+}
+
+.submit_btn:hover {
+	background-color: #8C8C8C;
+	color: #EAEAEA;
+}
+
+</style>	
 <script type="text/javascript">
 	function button_event(no) {
 
@@ -24,53 +97,66 @@
 </head>
 <body>
 
-	<table border="1" width="100%">
-		<tr>
-			<td>호실</td>
-			<td>${unit.no}호</td>
-		</tr>
-		<tr>
-			<td>관리인</td>
-			<td>${unit.name}</td>
-		</tr>
-		<tr>
-			<td>임차인</td>
-			<td>${unit.hire}</td>
-		</tr>
-		<tr>
-			<td>임대인</td>
-			<td>${unit.lease}</td>
-		</tr>
-		<tr>
-			<td>임대료</td>
-			<td>${rent_fee}원</td>
-		</tr>
-		<tr>
-			<td>사용기간</td>
-			<td>${unit.period}일</td>
-		</tr>
-		<tr>
-			<td>면적</td>
-			<td>${unit.size}㎡</td>
-		</tr>
-		<tr>
-			<td>입주일</td>
-			<td>${unit.coming}</td>
-		</tr>
-		<tr>
-			<td>계약만료</td>
-			<td>${unit.leaving}</td>
-		</tr>
-
-		<tr>
-			<td colspan="2"><c:set var="pageNo"
-					value="${empty param.pageNp ? '1' : param.pageNo }" /> <a
-				href="list.do?pageNo=${pageNo}">[목록]</a> <a
-				href="modify.do?no=${unit.no }">[상가정보수정]</a> <a
-				href="javascript:void(0);" onclick="button_event('${unit.no}');">[삭제하기]</a>
-			</td>
-		</tr>
-
-	</table>
+<div class="container">
+	<div id=main_div>
+			<span id="main_text">상가정보</span>
+		</div>
+	<form action="modify.do?no=${unit.no}" method="post">
+		<div class="text_div">
+				<span class="text_id">호실</span> 
+				<span>	<input class="input_text" name="hire"  type="text"  value="${unit.no}호" readonly /></span>
+			
+			</div>
+		
+		<div class="text_div">
+				<span class="text_id">관리인</span> <span>
+				<input class="input_text" name="hire" type="text" value="${unit.name}"readonly/></span>
+			</div>
+		
+		<div class="text_div">
+				<span class="text_id">임차인</span> <span>
+					<input class="input_text" name="hire" type="text" value="${unit.hire} "readonly/></span>
+			</div>
+		
+		<div class="text_div">
+				<span class="text_id">임대인</span> <span>
+			<input class="input_text" name="hire" type="text" value="${unit.lease}"readonly/></span>
+			</div>
+		
+		<div class="text_div">
+				<span class="text_id">임대료</span> <span>
+				<input class="input_text" name="hire" type="text" value="${rent_fee}원"readonly/></span>
+			</div>
+		
+		<div class="text_div">
+				<span class="text_id">사용기간</span> <span>
+				<input class="input_text" name="hire" type="text" value="${unit.period}일 "readonly/></span>
+			</div>
+		
+		<div class="text_div">
+				<span class="text_id">면적</span> <span>
+				<input class="input_text" name="hire" type="text" value="${unit.size}㎡"readonly/></span>
+			</div>
+		
+		<div class="text_div">
+				<span class="text_id">입주일</span> <span>
+				<input class="input_text" name="hire" type="text" value="${unit.coming} "readonly/></span>
+			</div>
+		
+		<div class="text_div">
+				<span class="text_id">계약기간</span> <span>
+			<input class="input_text" name="hire" type="text" value="${unit.leaving} "readonly/></span>
+			</div>
+		
+		
+			<div id="btn_div">
+			<c:set var="pageNo" value="${empty param.pageNp ? '1' : param.pageNo }" /> 
+			<button class="submit_btn" type="button" onclick="location.href='list.do?pageNo=${pageNo}'">목록</button>
+			<button class="submit_btn" type="button" onclick="location.href='modify.do?no=${unit.no }'">상가정보수정</button>
+			<button class="submit_btn" type="button" onclick="button_event('${unit.no}')">삭제하기</button>
+		
+		</div>
+	</form>
+	</div>
 </body>
 </html>

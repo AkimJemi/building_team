@@ -3,13 +3,13 @@
 	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
 	id="WebApp_ID" version="4.0">
-	
+
 	<display-name>board</display-name>
-	
+
 	<listener>
 		<listener-class>jdbc.DBCPInitListener</listener-class>
 	</listener>
-	
+
 	<context-param>
 		<param-name>poolConfig</param-name>
 		<param-value>
@@ -38,17 +38,18 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
-	<filter>
+	<!-- <filter>
 		<filter-name>LoginCheckFilter</filter-name>
 		<filter-class>filter.LoginCheckFilter</filter-class>
 	</filter>
 
 	<filter-mapping>
 		<filter-name>LoginCheckFilter</filter-name>
-		<url-pattern>/changePwd.do</url-pattern>
 		<url-pattern>/subList.do</url-pattern>
+		<url-pattern>/write.do</url-pattern>
+		<url-pattern>/read.do</url-pattern>
 	</filter-mapping>
-	
+ -->
 	<servlet>
 		<servlet-name>ControllerUsingURI</servlet-name>
 		<servlet-class>mvc.controller.ControllerUsingURI</servlet-class>
@@ -60,15 +61,18 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>ControllerUsingURI</servlet-name>
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 	
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+
+
 	<welcome-file-list>
-		<welcome-file>loginForm.html</welcome-file>
-		<welcome-file>WEB-INF/view/loginForm.jsp</welcome-file>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.htm</welcome-file>
 		<welcome-file>index.jsp</welcome-file>

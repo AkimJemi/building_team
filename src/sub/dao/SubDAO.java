@@ -8,11 +8,17 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import jdbc.JdbcUtil;
+import main.model.Main;
 import sub.model.Sub;
 import sub.model.SubPaging;
+import unit.model.Unit;
 
 public class SubDAO {
 	private Sub sub = new Sub();
+	private Sub subA = new Sub();
+	private Unit unit = new Unit();
+	private Main main = new Main();
+	private Main mainA = new Main();
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
 
@@ -20,13 +26,12 @@ public class SubDAO {
 			throws SQLException {
 		ArrayList<Sub> SubMixed = new ArrayList<>();
 		SubPaging subPaging = (SubPaging) pagingValues.get("paging");
-
 		if (pagingValues.get("search") != null) {
 			String search = (String) pagingValues.get("search");
 			pstmt = conn.prepareStatement(
-					" select * from ( select w.no 'w.no' , w.water_ind 'w.water_ind', e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind', u.name 'u.name', u.hire 'u.hire' , u.lease 'u.lease' , u.rent_fee 'u.rent_fee' , u.period 'u.period', u.size 'u.size', u.coming 'u.coming', u.leaving 'u.leaving' , m.memberId 'm.memberId', m.name 'm.name', m.total_size 'm.total_size', m.com_heat 'm.com_heat', m.com_clean 'm.com_clean', m.com_ev 'm.com_ev', m.com_es 'm.com_es', m.com_maintain 'm.com_maintain', m.com_insur 'm.com_insur', m.com_labor 'm.com_labor', m.com_water 'm.com_water', m.com_ele 'm.com_ele' from ele e, water w, unit u , main m where w.no = e.no and e.no =w.no group by e.no "
+					"select * from ( select w.no 'w.no' , w.water_ind 'w.water_ind', e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind', u.name 'u.name', u.hire 'u.hire' , u.lease 'u.lease' , u.rent_fee 'u.rent_fee' , u.period 'u.period', u.size 'u.size', u.coming 'u.coming', u.leaving 'u.leaving' , m.memberId 'm.memberId', m.name 'm.name', m.total_size 'm.total_size', m.com_heat 'm.com_heat', m.com_clean 'm.com_clean', m.com_ev 'm.com_ev', m.com_es 'm.com_es', m.com_maintain 'm.com_maintain', m.com_insur 'm.com_insur', m.com_labor 'm.com_labor', m.com_water 'm.com_water', m.com_ele 'm.com_ele' from ele e, water w, unit u , main m where w.no = e.no and e.no =u.no group by e.no "
 							+ "	 having w.no like ? or w.water_ind like ? or  e.ele_basic  like ? or e.ele_ind  like ? or u.name like ? or u.hire like ? or u.lease like ? or  m.com_heat like ? or  m.com_clean  like ? or  m.com_ev  like ? or  m.com_es  like ? or  m.com_maintain  like ? or  m.com_insur like ? or m.com_labor like ? or m.com_water like ? or m.com_ele like ?\r\n"
-							+ "	  ) as t limit ? offset ?;");
+							+ "	  ) as t limit ? offset ?");
 			pstmt.setString(1, "%" + search + "%");
 			pstmt.setString(2, "%" + search + "%");
 			pstmt.setString(3, "%" + search + "%");
@@ -46,7 +51,6 @@ public class SubDAO {
 			pstmt.setInt(17, subPaging.getLimit());
 			pstmt.setInt(18,
 					subPaging.getLimit() * (subPaging.getCurrentPage() - 1));
-
 			try {
 				rs = pstmt.executeQuery();
 				while (rs.next()) {
@@ -62,29 +66,44 @@ public class SubDAO {
 				}
 			} catch (Exception e) {
 				e.getMessage();
-				System.out.println(" error :  subSelectAll");
+				System.out.println(" error :  subMainSelectAll");
 			}
 		} else {
 			pstmt = conn.prepareStatement(
-					"select * from ( select w.no 'w.no' , w.water_ind 'w.water_ind',e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind', u.name 'u.name',u.hire 'u.hire' , u.lease 'u.lease' , u.rent_fee 'u.rent_fee' , u.period 'u.period', u.size 'u.size', u.coming 'u.coming', u.leaving 'u.leaving' , m.memberId 'm.memberId', m.name 'm.name', m.total_size 'm.total_size', m.com_heat 'm.com_heat', m.com_clean 'm.com_clean', m.com_ev 'm.com_ev', m.com_es 'm.com_es',m.com_maintain 'm.com_maintain', m.com_insur 'm.com_insur', m.com_labor 'm.com_labor', m.com_water 'm.com_water', m.com_ele 'm.com_ele' from ele e, water w, unit u , main m where w.no = e.no and e.no =w.no group by e.no ) as t limit ? offset ? ");
+					"select * from ( select w.no 'w.no' , w.water_ind 'w.water_ind',e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind' , u.size 'u.size', u.coming 'u.coming', m.total_size 'm.total_size', m.com_heat 'm.com_heat', m.com_clean 'm.com_clean', m.com_ev 'm.com_ev', m.com_es 'm.com_es',m.com_maintain 'm.com_maintain', m.com_insur 'm.com_insur', m.com_labor 'm.com_labor', m.com_water 'm.com_water', m.com_ele 'm.com_ele' , u.name 'u.name' from ele e, water w, unit u , main m where w.no = e.no and e.no =u.no group by e.no ) as t limit ? offset ? ");
 			pstmt.setInt(1, subPaging.getLimit());
 			pstmt.setInt(2,
 					subPaging.getLimit() * (subPaging.getCurrentPage() - 1));
 			try {
 				rs = pstmt.executeQuery();
+				// main , com_water, total_size, com_ele, com_heat,
+				// com_maintain, com_es, com_ev, com_insur, com
+				// sub , no ,water_ind, ele_basic, ele_ind
+				// unit , size, coming
+				// Main(Sub sub, Main main, Unit unit);
 				while (rs.next()) {
-					sub = new Sub(rs.getInt(1), rs.getInt(2), rs.getInt(3),
-							rs.getInt(4), rs.getString(5), rs.getString(6),
-							rs.getString(7), rs.getInt(8), rs.getString(9),
-							rs.getInt(10), rs.getDate(11), rs.getDate(12),
-							rs.getString(13), rs.getString(14), rs.getInt(15),
-							rs.getInt(16), rs.getInt(17), rs.getInt(18),
-							rs.getInt(19), rs.getInt(20), rs.getInt(21),
-							rs.getInt(22), rs.getInt(23), rs.getInt(24));
+					subA = new Sub(rs.getInt(1), rs.getInt(2), rs.getInt(3),
+							rs.getInt(4));
+					unit = new Unit(rs.getInt(5), rs.getDate(6), rs.getString(17));
+					mainA = new Main(rs.getInt(7), rs.getInt(8), rs.getInt(9),
+							rs.getInt(10), rs.getInt(11), rs.getInt(12),
+							rs.getInt(13), rs.getInt(14), rs.getInt(15),rs.getInt(16));
+					sub = new Sub(subA, mainA , unit);
 					SubMixed.add(sub);
 				}
+				// while (rs.next()) {
+				// sub = new Sub(rs.getInt(1), rs.getInt(2), rs.getInt(3),
+				// rs.getInt(4), rs.getString(5), rs.getString(6),
+				// rs.getString(7), rs.getInt(8) , rs.getString(9),
+				// rs.getInt(10), rs.getDate(11), rs.getDate(12),
+				// rs.getString(13), rs.getString(14), rs.getInt(15),
+				// rs.getInt(16), rs.getInt(17), rs.getInt(18),
+				// rs.getInt(19), rs.getInt(20), rs.getInt(21),
+				// rs.getInt(22), rs.getInt(23), rs.getInt(24));
+				// SubMixed.add(sub);
+				// }
 			} catch (Exception e) {
-				System.out.println(" error :  subSelectAll");
+				System.out.println(" error :  subMainSelectAll");
 				e.getMessage();
 			}
 		}
@@ -301,7 +320,7 @@ public class SubDAO {
 		try {
 			if (search != null) {
 				pstmt = conn.prepareStatement(
-						"select count(t.allc) from ( select w.no 'w.no' , w.water_ind 'w.water_ind', e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind', u.name allc, u.hire 'u.hire' , u.lease 'u.lease' , u.rent_fee 'u.rent_fee' , u.period 'u.period', u.size 'u.size', u.coming 'u.coming', u.leaving 'u.leaving' , m.memberId 'm.memberId', m.name 'm.name', m.total_size 'm.total_size', m.com_heat 'm.com_heat', m.com_clean 'm.com_clean', m.com_ev 'm.com_ev', m.com_es 'm.com_es', m.com_maintain 'm.com_maintain', m.com_insur 'm.com_insur', m.com_labor 'm.com_labor', m.com_water 'm.com_water', m.com_ele 'm.com_ele' from ele e, water w, unit u , main m where w.no = e.no and e.no =w.no group by e.no "
+						"select count(t.allc) from ( select w.no 'w.no' , w.water_ind 'w.water_ind', e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind', u.name allc, u.hire 'u.hire' , u.lease 'u.lease' , u.rent_fee 'u.rent_fee' , u.period 'u.period', u.size 'u.size', u.coming 'u.coming', u.leaving 'u.leaving' , m.memberId 'm.memberId', m.name 'm.name', m.total_size 'm.total_size', m.com_heat 'm.com_heat', m.com_clean 'm.com_clean', m.com_ev 'm.com_ev', m.com_es 'm.com_es', m.com_maintain 'm.com_maintain', m.com_insur 'm.com_insur', m.com_labor 'm.com_labor', m.com_water 'm.com_water', m.com_ele 'm.com_ele' from ele e, water w, unit u , main m where w.no = e.no and e.no =u.no group by e.no "
 								+ "	 having w.no like ? or w.water_ind like ? or  e.ele_basic  like ? or e.ele_ind  like ? or u.name like ? or u.hire like ? or u.lease like ? or  m.com_heat like ? or  m.com_clean  like ? or  m.com_ev  like ? or  m.com_es  like ? or  m.com_maintain  like ? or  m.com_insur like ? or m.com_labor like ? or m.com_water like ? or m.com_ele like ? "
 								+ " ) as t");
 				pstmt.setString(1, "%" + search + "%");
@@ -322,14 +341,14 @@ public class SubDAO {
 				pstmt.setString(16, "%" + search + "%");
 			} else {
 				pstmt = conn.prepareStatement(
-						"select count(t.allc) from ( select w.no 'w.no' , w.water_ind 'w.water_ind',e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind', u.name 'u.name',u.hire 'u.hire' , u.lease 'u.lease' , u.rent_fee 'u.rent_fee' , u.period 'u.period', u.size allc, u.coming 'u.coming', u.leaving 'u.leaving' , m.memberId 'm.memberId', m.name 'm.name', m.total_size 'm.total_size', m.com_heat 'm.com_heat', m.com_clean 'm.com_clean', m.com_ev 'm.com_ev', m.com_es 'm.com_es',m.com_maintain 'm.com_maintain', m.com_insur 'm.com_insur', m.com_labor 'm.com_labor', m.com_water 'm.com_water', m.com_ele 'm.com_ele' from ele e, water w, unit u , main m where w.no = e.no and e.no =w.no group by e.no ) as t");
+						"select count(t.allc) from ( select w.no 'w.no' , w.water_ind 'w.water_ind',e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind', u.name 'u.name',u.hire 'u.hire' , u.lease 'u.lease' , u.rent_fee 'u.rent_fee' , u.period 'u.period', u.size allc, u.coming 'u.coming', u.leaving 'u.leaving' , m.memberId 'm.memberId', m.name 'm.name', m.total_size 'm.total_size', m.com_heat 'm.com_heat', m.com_clean 'm.com_clean', m.com_ev 'm.com_ev', m.com_es 'm.com_es',m.com_maintain 'm.com_maintain', m.com_insur 'm.com_insur', m.com_labor 'm.com_labor', m.com_water 'm.com_water', m.com_ele 'm.com_ele' from ele e, water w, unit u , main m where w.no = e.no and e.no =u.no group by e.no ) as t");
 			}
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				result = rs.getInt(1);
 			}
 		} catch (Exception e) {
-			System.out.println(" error :  subAllCount");
+			System.out.println(" error :  subMainAllCount");
 			e.getMessage();
 		} finally {
 			JdbcUtil.close(rs);
@@ -337,8 +356,7 @@ public class SubDAO {
 		}
 		return result;
 	}
-	
-	
+
 	//
 	public ArrayList<Sub> subSelectAll(Connection conn,
 			Map<String, Object> pagingValues) throws SQLException {
@@ -358,7 +376,6 @@ public class SubDAO {
 			pstmt.setInt(5, subPaging.getLimit());
 			pstmt.setInt(6,
 					subPaging.getLimit() * (subPaging.getCurrentPage() - 1));
-			System.out.println("tests");
 			try {
 				rs = pstmt.executeQuery();
 				while (rs.next()) {
@@ -371,8 +388,8 @@ public class SubDAO {
 				System.out.println(" error :  subSelectAll");
 			}
 		} else {
-			System.out.println("tests");
-			System.out.println( subPaging.getLimit() +" ," + subPaging.getLimit()+ ", " + subPaging.getCurrentPage());
+			System.out.println(subPaging.getLimit() + " ,"
+					+ subPaging.getLimit() + ", " + subPaging.getCurrentPage());
 			pstmt = conn.prepareStatement(
 					"select * from ( select w.no test , w.water_ind 'w.water_ind',e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind' from ele e, water w where w.no = e.no group by e.no ) as t limit ? offset ? ");
 			pstmt.setInt(1, subPaging.getLimit());
@@ -399,9 +416,9 @@ public class SubDAO {
 		int result = 0;
 		try {
 			if (search != null) {
-				System.out.println("subAllCount - if" );
+				System.out.println("subAllCount - if");
 				pstmt = conn.prepareStatement(
-						"select count(t.test) from ( select w.no test , w.water_ind 'w.water_ind', e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind' where w.no = e.no and e.no =w.no group by e.no "
+						"select count(t.test) from ( select w.no test , w.water_ind 'w.water_ind', e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind' from ele e, water w where w.no = e.no group by e.no "
 								+ "	 having w.no like ? or w.water_ind like ? or  e.ele_basic  like ? or e.ele_ind  like ? "
 								+ "	  ) as t ");
 				pstmt.setString(1, "%" + search + "%");
@@ -409,9 +426,10 @@ public class SubDAO {
 				pstmt.setString(3, "%" + search + "%");
 				pstmt.setString(4, "%" + search + "%");
 			} else {
-				System.out.println("subAllCount - else" );
+				System.out.println("subAllCount - else");
 				pstmt = conn.prepareStatement(
-						"select count(t.test) from ( select w.no test , w.water_ind 'w.water_ind',e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind' from ele e, water w where w.no = e.no group by e.no ) as t ");
+						"select count(t.test) from ( select w.no test , w.water_ind 'w.water_ind', e.ele_basic 'e.ele_basic', e.ele_ind 'e.ele_ind' from ele e, water w where w.no = e.no group by e.no "
+								+ " ) as t ");
 			}
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -426,4 +444,5 @@ public class SubDAO {
 		}
 		return result;
 	}
+
 }

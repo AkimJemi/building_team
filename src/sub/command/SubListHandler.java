@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jdbc.connection.ConnectionProvider;
+import main.model.Main;
 import mvc.command.CommandHandler;
 import sub.model.Sub;
 import sub.model.SubPaging;
@@ -47,9 +48,9 @@ public class SubListHandler implements CommandHandler {
 				currentPage = 1;
 			}
 			if (rq.getParameter("uri") != null)
-				total = subService.subAllCount(search);
-			else
 				total = subService.subMainAllCount(search);
+			else
+				total = subService.subAllCount(search);
 			//
 			if (rq.getParameter("limit") != null)
 				limit = Integer.parseInt(rq.getParameter("limit"));

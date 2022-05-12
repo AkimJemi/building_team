@@ -6,26 +6,102 @@
 <meta charset="UTF-8">
 <title>Sub 리스트</title>
 <style type="text/css">
-.Containner_Main {
-	display: flex;
-	justify-content: center;
-	text-align: center;
-	align-items: center;
+body {
+	font-family: 'Open Sans', sans-serif;
 }
 
-a {
-	text-decoration: none;
+.container {
+	width: 50%;
+	margin: auto;
 }
 
-.header {
-	position: absolute;
-	top: 50px;
-	left: 50px;
-	margin: 30px;
-}
-
-input {
+table {
 	width: 100%;
+	border: none;
+	margin-top: 50px;
+}
+
+td {
+	border: none;
+	color: #8C8C8C;
+	text-align: center;
+	height:35px;
+	padding:0;
+}
+.td_title {
+	color: #747474;
+	text-align: center;
+	height:35px;
+	font-weight: bold;
+	border-bottom: 1px solid gray;
+}
+a {
+  text-decoration-line: none;
+  color:#8C8C8C;
+  }
+a:hover {
+  text-decoration-line: none;
+  color:#5D5D5D;
+  }
+.head_text {
+	font-weight: bold;
+	font-size: 25px;
+	border-bottom: 2px solid gray;
+	color: black;
+	text-align: left;
+}
+
+.trTarget :nth-child(1) {
+	width: 15%;
+}
+
+.trTarget :nth-child(3) {
+	width: 15%;
+}
+
+.trTarget :nth-child(4) {
+	width: 20%;
+}
+
+.trTarget :nth-child(2) {
+	width: 40%;
+}
+#tr_page_a{
+padding-top: 15px;
+}
+ .page_a{
+ margin:0 10px;
+ }
+#btn_div {
+	float: right;
+	margin-top: 30px;
+}
+
+.input_btn {
+	background-color: #353535;
+	color: #EAEAEA;
+	padding: auto 30px;
+	border-radius: 2px;
+	border: none;
+}
+.input_btn:hover {
+	background-color: #8C8C8C;
+	color: #EAEAEA;
+}
+.submit_btn {
+	background-color: #353535;
+	color: #EAEAEA;
+	padding: auto 30px;
+	border-radius: 2px;
+	border: none;
+	width: 100px;
+	height: 30px;
+	font-size: 15px;
+	font-weight: 400;
+}
+.submit_btn:hover {
+	background-color: #8C8C8C;
+	color: #EAEAEA;
 }
 </style>
 </head>
@@ -51,41 +127,17 @@ input {
 		}
 	}
 </script>
-<body class="Containner_Main">
-	<div class="header">
-		<a href="subRead.do">[ 추가하기 ] </a> <br /><br /> <a href="<%=request.getContextPath()%>/subList.do?uri=main">[ 뒤로가기 ] </a>
-	</div>
+<body>
+<div class="container">
 	<form action="subList.do" method="post">
-		<table border='1' width="700">
-			<%-- <tr>
-				<td colspan="7" height="50px">
-					<c:set var="uriSetting" value="currentPage=${paging.currentPage}&startPage=${paging.startPage}&limit=${paging.limit }" />
-					<input type="button" value="등록" onclick="location.href = 'subRead.do'" />
-					<a href="<%=request.getContextPath()%>/index.jsp">[ 목록으로 ]</a> <a href="javascript:void(0)" onclick="autoInsert(5, '${uriSetting }')">[ 자동
-						추가5 ]</a> <a href="javascript:void(0)" onclick="autoInsert(10, '${uriSetting }')">[ 자동 추가10 ]</a> <a href="javascript:void(0)"
-						onclick="autoInsert(15, '${uriSetting }')">[ 자동 추가15 ]</a>
-				</td>
-			</tr> --%>
-			<%-- <tr>
-				<td colspan="7" height="50px">
-					<c:set var="limitSetting" value="currentPage=${paging.currentPage}&startPage=${paging.startPage}" />
-					<input type="hidden" name="limit" value="${paging.limit }" />
-					${limitSetting }
-					<input type="button" value="limit(5)" onclick="location.href = 'subList.do?limit=5&${limitSetting}'" />
-					<input type="button" value="limit(10)" onclick="location.href = 'subList.do?limit=10&${limitSetting}'" />
-					<input type="button" value="limit(15)" onclick="location.href = 'subList.do?limit=15&${limitSetting}'" />
-					<input type="button" value="limit(20)" onclick="location.href = 'subList.do?limit=20&${limitSetting}'" />
-				</td>
-			</tr> --%>
+		<table border='1' >
 			<tr>
-				<td colspan="7" height="50px">
-					<h1>수도세, 전기세 관리</h1>
-				</td>
+				<td class="head_text" colspan="6">수도세, 전기세 관리</td>
 			</tr>
 			<tr>
-				<td colspan="7" height="50px">
+				<td colspan="6" height="50px">
 					<input type="text" name="search" style="width: 80%; height: 20px; margin: 5px;" value="${ search.search}" />
-					<input type="submit" value="검색" width="10px" height="10px" style="width: 70px; height: 30px;" />
+					<input class="input_btn" type="submit" value="검색" width="10px" height="10px" style="width: 70px; height: 30px;" />
 				</td>
 			</tr>
 			<tr>
@@ -93,8 +145,6 @@ input {
 				<td>수도세</td>
 				<td>전기 기본세</td>
 				<td>전기 개인세</td>
-				<td>수정</td>
-				<td>삭제</td>
 			</tr>
 			<c:forEach var="sub" items="${sub }">
 				<tr>
@@ -106,36 +156,33 @@ input {
 					</td>
 					<td>${sub.ele_basic }</td>
 					<td>${sub.ele_ind }</td>
-					<td>
-						<input type="button" value="수정" onclick="location.href = 'subModify.do?no=${sub.no }'" />
-					</td>
-					<td>
-						<input type="button" value="삭제" onclick="deleteConfirm('${sub.no}')" />
-					</td>
 				</tr>
 			</c:forEach>
 			<tr>
-				<td colspan="22">
-					<c:if test="${articlePage.startPage>5 }">
-						<a href="subList.do?pageNo=${articlePage.startPage -5 }"> [이전]</a>
-					</c:if>
+				<td id="tr_page_a" colspan="22">
 					<c:if test="${paging.total/paging.limit<=5 }">
 						<c:forEach var="currentPage" begin="${paging.startPage }" end="${paging.total/paging.limit}">
-							<a href="subList.do?currentPage=${ currentPage}&limit=${paging.limit }">[${currentPage }]</a>
+							<a class="page_a" href="subList.do?currentPage=${ currentPage}&limit=${paging.limit }">${currentPage }</a>
 						</c:forEach>
 					</c:if>
 					<c:if test="${paging.endPage>5 }">
-						<a href="subList.do?startPage=${ paging.startPage-5}&limit=${paging.limit }&currentPage=${ paging.startPage -1}"> [이전]</a>
+						<a class="page_a" href="subList.do?startPage=${ paging.startPage-5}&limit=${paging.limit }&currentPage=${ paging.startPage -1}"> 이전</a>
 					</c:if>
 					<c:if test="${paging.total/paging.limit>5 }">
 						<c:forEach var="currentPage" begin="${paging.startPage }" end="${ paging.startPage +4 }">
-							<a href="subList.do?currentPage=${ currentPage}&limit=${paging.limit }&startPage=${ paging.startPage}">[${currentPage }]</a>
+							<a class="page_a" href="subList.do?currentPage=${ currentPage}&limit=${paging.limit }&startPage=${ paging.startPage}">${currentPage }</a>
 						</c:forEach>
-						<a href="subList.do?startPage=${ paging.endPage+1}&limit=${paging.limit }&currentPage=${ paging.endPage +1}">[다음]</a>
+						<c:if test="${paging.endPage != 10 }">
+							<a class="page_a" href="subList.do?startPage=${ paging.endPage+1}&limit=${paging.limit }&currentPage=${ paging.endPage +1}">다음</a>
+						</c:if>
 					</c:if>
 				</td>
 			</tr>
 		</table>
 	</form>
+	<div id="btn_div">
+	<button  class="submit_btn" type="button" onclick="location.href = '<%=request.getContextPath()%>/subList.do?uri=main'">뒤로가기</button>
+	</div>
+	</div>
 </body>
 </html>

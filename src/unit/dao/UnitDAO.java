@@ -1,7 +1,6 @@
 package unit.dao;
 
 import java.sql.Connection;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,10 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import article.model.Article;
-import article.model.Writer;
 import jdbc.JdbcUtil;
-
 import unit.model.Unit;
 
 public class UnitDAO {
@@ -45,7 +41,7 @@ public class UnitDAO {
 	}
 
 	public Unit insert(Connection conn, Unit unit) throws SQLException {
-		try (PreparedStatement pstmt = conn.prepareStatement("insert into unit(no, name, hire, Lease, rent_fee,period,size) values(?,?,?,?,?,?,?)")) {
+		try (PreparedStatement pstmt = conn.prepareStatement("insert into unit(no, name, hire, Lease, rent_fee,period,size,leaving ) values(?,?,?,?,?,?,?,(SELECT DATE_ADD(NOW(), INTERVAL 2 YEAR)))")) {
 			pstmt.setInt(1, unit.getNo());
 			pstmt.setString(2, unit.getName());
 			pstmt.setString(3, unit.getHire());
@@ -123,14 +119,10 @@ public class UnitDAO {
 	}
 	public void delete(Connection conn,Unit unit) throws SQLException {
 		try (PreparedStatement pstmt = conn.prepareStatement(
-				"update unit set name=\"cos\" , hire=\"임차인\", lease=0, rent_fee=0, period=0, size=?, coming=?, leaving=? where no = ?")) {
-
-
+				"update unit set name='' , hire='', lease=0, rent_fee=0, period=0, size=?, coming='2020-01-01' , leaving='2020-01-01' where no = ?")) {
 			//pstmt.setString(1, unit.getLease());
 			pstmt.setInt(1, unit.getSize());
-			pstmt.setDate(2, unit.getComing());
-			pstmt.setDate(3, unit.getLeaving());
-			pstmt.setInt(4, unit.getNo());
+			pstmt.setInt(2, unit.getNo());
 			
 			//pstmt.setString(1, unit.getName());
 			
