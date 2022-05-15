@@ -31,7 +31,9 @@ input {
 	float: right;
 	margin: 0 5px
 }
-
+.red_text {
+	color: #DF4D4D;
+}
 input:focus {
 	background-color: #E8F0FE;
 	outline: none;
@@ -97,69 +99,69 @@ display: none;
 <body>
 	<div class="container">
 		<div id=main_div>
-			<span id="main_text">상가정보입력</span>
+			<span id="main_text">商店情報入力</span><span class="red_text">*下の必須入力事項をすべて入力してください。</span>
 		</div>
 		<form method="post" action="write.do">
 			<div class="text_div">
-				<span class="text_id">호수</span> <span> <input type="text"
+				<span class="red_text">*</span><span class="text_id">号室</span> <span> <input type="text"
 					name="no" value="${subReq.no }" <%=a%> /></span>
-				<c:if test="${errors.no }">호수를 입력하세요</c:if>
+				<c:if test="${errors.no }">号室を入力してください。</c:if>
 			</div>
 
 			<div class="text_div">
-				<span class="text_id">관리자 이름</span> <span> <input type="text"
+				<span class="red_text">*</span><span class="text_id">管理人　名前</span> <span> <input type="text"
 					name="name" value="${subReq.no }" <%=a%> /></span>
-				<c:if test="${errors.no }">호수를 입력하세요</c:if>
+				<c:if test="${errors.no }">号室を入力してください。</c:if>
 			</div>
 
 			<div class="text_div">
-				<span class="text_id">임차인</span> <span> <input type="text"
+				<span class="red_text">*</span><span class="text_id">賃借人</span> <span> <input type="text"
 					name="hire" value="${subReq.no }" <%=a%> /></span>
-				<c:if test="${errors.no }">호수를 입력하세요</c:if>
+				<c:if test="${errors.no }">号室を入力してください。</c:if>
 			</div>
 
 			<div class="text_div">
-				<span class="text_id">임대인</span> <span> <input type="text"
+				<span class="red_text">*</span><span class="text_id">賃貸人</span> <span> <input type="text"
 					name="lease" value="${subReq.no }" <%=a%> /></span>
-				<c:if test="${errors.no }">호수를 입력하세요</c:if>
+				<c:if test="${errors.no }">号室を入力してください。</c:if>
 			</div>
 
 			<div class="text_div">
-				<span class="text_id">임대료</span> <span> <input type="text"
+				<span class="red_text">*</span><span class="text_id">貸し賃</span> <span> <input type="text"
 					name="rent_fee" value="${subReq.no }" <%=a%> /></span>
-				<c:if test="${errors.no }">호수를 입력하세요</c:if>
+				<c:if test="${errors.no }">号室を入力してください。</c:if>
 			</div>
 
 			<div class="text_div">
-				<span class="text_id">사용기간</span> <span> <input type="text"
+				<span class="red_text">*</span><span class="text_id">利用期間</span> <span> <input type="text"
 					name="period" value="${subReq.no }" <%=a%> /></span>
-				<c:if test="${errors.no }">호수를 입력하세요</c:if>
+				<c:if test="${errors.no }">号室を入力してください。</c:if>
 			</div>
 
 			<div class="text_div">
-				<span class="text_id">면적</span> <span> <input type="text"
+				<span class="red_text">*</span><span class="text_id">面積</span> <span> <input type="text"
 					name="size" value="${subReq.no }" <%=a%> /></span>
-				<c:if test="${errors.no }">호수를 입력하세요</c:if>
+				<c:if test="${errors.no }">号室を入力してください。</c:if>
 			</div>
 
 			<div class="text_div">
-				<span class="text_id">입주일</span> <span> <input type="date"
+				<span class="red_text">*</span><span class="text_id">入居日</span> <span> <input type="date"
 					name="coming" value="${subReq.no }" <%=a%> /></span>
-				<c:if test="${errors.no }">호수를 입력하세요</c:if>
+				<c:if test="${errors.no }">号室を入力してください。</c:if>
 			</div>
 
 
 			<div class="hidden">
-				<span class="text_id">계약기간</span> <span> <input type="date"
+				<span class="red_text">*</span><span class="text_id">契約期間</span> <span> <input type="date"
 					name="leaving" value="${subReq.no }" <%=a%> /></span>
-				<c:if test="${errors.no }">호수를 입력하세요</c:if>
+				<c:if test="${errors.no }">号室を入力してください。</c:if>
 			</div>
 
 			<div id="btn_div">
-				<input class="submit_btn" type="button"	onclick="location.href='<%=request.getContextPath()%>/unit/list.do'"value="뒤로가기"/>
+				<input class="submit_btn" type="button"	onclick="location.href='<%=request.getContextPath()%>/unit/list.do'"value="戻る"/>
 				<input type="hidden"
 					value="${ ctxPath = pageContext.request.contextPath }" /> <input
-					class="submit_btn" type="submit" value="등록" />
+					class="submit_btn" type="submit" value="登録" />
 			</div>
 		</form>
 	</div>
